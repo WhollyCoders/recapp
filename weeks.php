@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Weeks</title>
-  </head>
-  <body>
+<?php $page_title = 'Weeks'; ?>
+<?php include('./includes/header.inc.php'); ?>
     <div class="container">
       <h1>Weeks</h1>
       <ul>
@@ -20,5 +15,4 @@
         <li><a href="weighins.php?week=10">Week 10</a></li>
       </ul>
     </div>
-  </body>
-</html>
+<?php include('./includes/footer.inc.php'); ?>
