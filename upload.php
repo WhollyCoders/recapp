@@ -1,4 +1,4 @@
-<?php $page_title = 'Dashboard'; ?>
+<?php $page_title = 'Upload'; ?>
 <?php include('./includes/header.inc.php'); ?>
     <div class="container">
       <h1><?php echo($page_title);?></h1>

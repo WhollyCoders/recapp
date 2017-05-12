@@ -5,6 +5,10 @@ function prewrap($array){
   echo('</pre><br><hr>');
 }
 
+function column_name_prefix($table_name, $column_name){
+  return $table_name.'_'.$column_name;
+}
+
 function get_data($connection){
   $sql_select_records = "SELECT * FROM `table_weigh_in`";
   $result = mysqli_query($connection, $sql_select_records);
