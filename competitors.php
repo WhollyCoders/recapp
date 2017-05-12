@@ -5,9 +5,9 @@ require('./php/library.php');
 require('./models/competitor/Competitor.php');
 include('./includes/header.inc.php');
 $competitor = new Competitor($connection);
-prewrap($competitor);
+// prewrap($competitor);
 $competitors = $competitor->get_competitors();
-prewrap($competitor);
+// prewrap($competitor);
 
 ?>
     <div class="container">
@@ -31,6 +31,8 @@ prewrap($competitor);
             <td><?php echo($competitor['email']);?></td>
             <td><?php echo($competitor['phone']);?></td>
             <td><?php echo($competitor['date_entered']);?></td>
+            <td><a class="btn btn-primary" href="./editcompetitor.php?id=<?php echo($competitor['id']);?>">Update</a></td>
+            <td><a class="btn btn-danger" href="./delete.php?id=<?php echo($competitor['id']);?>">Delete</a></td>
           </tr>
       <?php
      }

@@ -116,7 +116,7 @@ class Competitor{
 
     public function select_competitor($id){
       $query = "SELECT * FROM competitors WHERE competitor_id = $id;";
-      // prewrap($query);
+      prewrap($query);
       $result = mysqli_query($this->connection, $query);
       return $result;
     }
@@ -126,10 +126,12 @@ class Competitor{
       $this->first_name   = $params['first_name'];
       $this->last_name    = $params['last_name'];
       $this->phone        = $params['phone'];
+      echo('<script>alert(\'Update Params --- Set\');</script>');
     }
 
     public function update_competitor($update_params){
       $id = $update_params['id'];
+      echo($id);
       $this->update_params($update_params);
       $query = "UPDATE `competitors`
       SET `competitor_email` = '$this->email',
@@ -150,7 +152,7 @@ class Competitor{
     }
 
     public function set_id($id){
-      $this->email = $id;
+      $this->id = $id;
     }
 
     public function set_email($email){
