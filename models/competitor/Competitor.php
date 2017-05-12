@@ -10,6 +10,8 @@ class Competitor{
     public $phone;
     public $data_array;
     public $data_json;
+    public $single_array;
+    public $single_json;
 
 
     public function __construct($connection){
@@ -92,33 +94,26 @@ class Competitor{
       return $this->data_array;
     }
 
-    // public function get_competitors_data_array(){
-    //   $result = $this->get_competitors();
-    //   if(!$result){echo('[GET COMPETITORS DATA | ARRAY] --- There has been an ERROR!!!');}
-    //   $this->data_array = array();
-    //   while($row = mysqli_fetch_assoc($result)){
-    //     $this->data_array[] = array(
-    //       'id'            =>    $row['competitor_id'],
-    //       'email'         =>    $row['competitor_email'],
-    //       'first_name'    =>    $row['competitor_first_name'],
-    //       'last_name'     =>    $row['competitor_last_name'],
-    //       'phone'         =>    $row['competitor_phone'],
-    //       'date_entered'  =>    $row['competitor_date_entered']
-    //     );
-    //   }
-    //   $this->data_json = json_encode($this->data_array);
-    //   return $this->data_array;
-    // }
-
     public function get_competitors_json(){
       return $this->data_json;
     }
 
     public function select_competitor($id){
       $query = "SELECT * FROM competitors WHERE competitor_id = $id;";
-      prewrap($query);
+      // prewrap($query);
       $result = mysqli_query($this->connection, $query);
-      return $result;
+      while($row = mysqli_fetch_assoc($result)){
+        $this->single_array[] = array(
+          'id'            =>    $row['competitor_id'],
+          'email'         =>    $row['competitor_email'],
+          'first_name'    =>    $row['competitor_first_name'],
+          'last_name'     =>    $row['competitor_last_name'],
+          'phone'         =>    $row['competitor_phone'],
+          'date_entered'  =>    $row['competitor_date_entered']
+        );
+      }
+      $this->single_json = json_encode($this->single_array);
+      return $this->single_array;
     }
 
     public function update_params($params){
@@ -126,7 +121,6 @@ class Competitor{
       $this->first_name   = $params['first_name'];
       $this->last_name    = $params['last_name'];
       $this->phone        = $params['phone'];
-      echo('<script>alert(\'Update Params --- Set\');</script>');
     }
 
     public function update_competitor($update_params){

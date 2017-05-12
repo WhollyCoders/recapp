@@ -19,7 +19,7 @@ if(isset($_GET['week'])){
 }
  ?>
     <div class="container">
-      <h1>Weigh-Ins</h1>
+      <h1>Weigh-Ins | <?php echo('Week '.$week); ?></h1>
       <table class="table table-striped table-bordered table-condensed table-hover">
         <tr>
           <th>ID</th>
