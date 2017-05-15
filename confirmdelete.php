@@ -1,6 +1,6 @@
 <?php
   $page_title = 'Delete Confirmation';
-  include('./includes/header.inc.php');
+  // include('./includes/header.inc.php');
   require('./php/init-competitor.php');
   if(isset($_GET['id'])){
     $id         = $_GET['id'];

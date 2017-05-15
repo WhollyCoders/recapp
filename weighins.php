@@ -4,49 +4,47 @@
 if(isset($_GET['week'])){
   require('../myb4g-connect.php');
   require('./php/library.php');
-  require('./classes/QueryDatabase.php');
+  require('./models/weigh_in/WeighIn.php');
   $week = $_GET['week'];
-  $sql_select_weigh_ins = "SELECT * FROM `table_weigh_in` WHERE weigh_in_week_id='$week'";
-  $query_data = array(
-    'connection'  => $connection,
-    'query'       => $sql_select_weigh_ins
-  );
-  $select = new QueryDatabase($query_data);
-  // prewrap($select->result);
-  $result = $select->result;
+  $weigh_in = new WeighIn($connection);
+  // prewrap($weigh_in);
+  $weigh_ins = $weigh_in->select_weigh_in($week);
+  // prewrap($competitor);
 }else{
   header('Location: ./index.php');
 }
  ?>
     <div class="container">
+      <div class="row">
+        <div class="col-md-9">
       <h1>Weigh-Ins | <?php echo('Week '.$week); ?></h1>
       <table class="table table-striped table-bordered table-condensed table-hover">
         <tr>
           <th>ID</th>
-          <th><a href="./competitors.php">CompetitorID</a></th>
-          <th><a href="./weeks.php">WeekID</a></th>
+          <th><a href="./competitors.php">Competitor ID</a></th>
+          <th><a href="./teams.php">Team ID</a></th>
           <th>Begin</th>
           <th>Previous</th>
           <th>Current</th>
-          <th><a href="./teams.php">TeamID</a></th>
-          <th><a href="./competitions.php">CompetitionID</a></th>
-          <th>Notes</th>
-          <th>DateAdded</th>
+          <th><a href="./weeks.php">Week ID</a></th>
+          <th>Notes</a></th>
+          <th>Date Entered</th>
         </tr>
           <?php
-          while($row = mysqli_fetch_assoc($result)){
+            foreach($weigh_ins as $weigh_in){
             ?>
             <tr>
-              <td><?php echo($row['weigh_in_id']);?></td>
-              <td><?php echo($row['weigh_in_competitor_id']);?></td>
-              <td><?php echo($row['weigh_in_week_id']);?></td>
-              <td><?php echo($row['weigh_in_begin']);?></td>
-              <td><?php echo($row['weigh_in_previous']);?></td>
-              <td><?php echo($row['weigh_in_current']);?></td>
-              <td><?php echo($row['weigh_in_team_id']);?></td>
-              <td><?php echo($row['weigh_in_competition_id']);?></td>
-              <td><?php echo($row['weigh_in_notes']);?></td>
-              <td><?php echo($row['weigh_in_date_added']);?></td>
+              <td><?php echo($weigh_in['id']);?></td>
+              <td><?php echo($weigh_in['competitor_id']);?></td>
+              <td><?php echo($weigh_in['team_id']);?></td>
+              <td><?php echo($weigh_in['begin']);?></td>
+              <td><?php echo($weigh_in['previous']);?></td>
+              <td><?php echo($weigh_in['current']);?></td>
+              <td><?php echo($weigh_in['week_id']);?></td>
+              <td><?php echo($weigh_in['notes']);?></td>
+              <td><?php echo($weigh_in['date_entered']);?></td>
+              <td><a class="btn btn-primary" href="./editweighin.php?id=<?php echo($weigh_in['id']);?>">Update</a></td>
+              <td><a class="btn btn-danger" href="./deleteweighin.php?id=<?php echo($weigh_in['id']);?>">Delete</a></td>
             </tr>
 
         <?php
@@ -60,5 +58,41 @@ if(isset($_GET['week'])){
         $next     = ($next > 10) ? $week :  $next;
        echo('<a href="weighins.php?week='.$previous.'"> < prev</a> | <a href="weighins.php?week='.$next.'"> next ></a>');
        ?>
+     </div>
+     <aside class="col-md-3">
+       <h2>Add Weigh-In</h2>
+       <form class="form-add-weigh_in" action="./php/addWeighIn.php" method="post">
+         <div class="form-group">
+           <label for="competitor_id">Competitor ID</label>
+           <input type="text" class="form-control" name="competitor_id" id="competitor_id" placeholder="Competitor ID">
+         </div>
+         <div class="form-group">
+           <label for="team_id">Team ID</label>
+           <input type="text" class="form-control" name="team_id" id="team_id" placeholder="Team ID">
+         </div>
+         <div class="form-group">
+           <label for="begin_weight">Beginning Weight</label>
+           <input type="text" class="form-control" name="begin_weight" id="begin_weight" placeholder="Beginning Weight">
+         </div>
+         <div class="form-group">
+           <label for="previous_weight">Previous Weight</label>
+           <input type="text" class="form-control" name="previous_weight" id="previous_weight" placeholder="Previous Weight">
+         </div>
+         <div class="form-group">
+           <label for="current_weight">Current Weight</label>
+           <input type="text" class="form-control" name="current_weight" id="current_weight" placeholder="Current Weight">
+         </div>
+         <div class="form-group">
+           <label for="week_id">Week ID</label>
+           <input type="text" class="form-control" name="week_id" id="week_id" placeholder="Week ID">
+         </div>
+         <div class="form-group">
+           <label for="notes">Notes</label>
+           <input type="text" class="form-control" name="notes" id="notes" placeholder="Notes">
+         </div>
+         <input class="btn btn-success btn-lg" type="submit" name="add_weigh_in" id="add_weigh_in" value="Submit">
+       </form>
+     </aside>
     </div>
+</div>
 <?php include('./includes/footer.inc.php'); ?>
