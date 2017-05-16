@@ -10,6 +10,7 @@ class Competitor{
     public $first_name;
     public $last_name;
     public $phone;
+    public $team_id;
     public $data_array;
     public $data_json;
     public $single_array;
@@ -52,6 +53,7 @@ class Competitor{
         `competitor_first_name`,
         `competitor_last_name`,
         `competitor_phone`,
+        `competitor_team_id`,
         `competitor_date_entered`
       ) VALUES (
         NULL,
@@ -59,6 +61,7 @@ class Competitor{
         '$this->first_name',
         '$this->last_name',
         '$this->phone',
+        '$this->team_id',
         CURRENT_TIMESTAMP
       );";
     }
@@ -70,6 +73,7 @@ class Competitor{
         `competitor_first_name` VARCHAR(100) NOT NULL ,
         `competitor_last_name` VARCHAR(100) NOT NULL ,
         `competitor_phone` VARCHAR(20) NOT NULL ,
+        `competitor_team_id` INT UNSIGNED NOT NULL ,
         `competitor_date_entered` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
         PRIMARY KEY (`competitor_id`)
       ) ENGINE = InnoDB;";
@@ -89,6 +93,7 @@ class Competitor{
           'first_name'    =>    $row['competitor_first_name'],
           'last_name'     =>    $row['competitor_last_name'],
           'phone'         =>    $row['competitor_phone'],
+          'team_id'       =>    $row['competitor_team_id'],
           'date_entered'  =>    $row['competitor_date_entered']
         );
       }
@@ -111,6 +116,7 @@ class Competitor{
           'first_name'    =>    $row['competitor_first_name'],
           'last_name'     =>    $row['competitor_last_name'],
           'phone'         =>    $row['competitor_phone'],
+          'team_id'       =>    $row['competitor_team_id'],
           'date_entered'  =>    $row['competitor_date_entered']
         );
       }
@@ -123,6 +129,7 @@ class Competitor{
       $this->first_name   = $params['first_name'];
       $this->last_name    = $params['last_name'];
       $this->phone        = $params['phone'];
+      $this->team_id      = $params['team_id'];
     }
 
     public function update_competitor($update_params){
@@ -133,7 +140,8 @@ class Competitor{
       SET `competitor_email` = '$this->email',
       `competitor_first_name` = '$this->first_name',
       `competitor_last_name` = '$this->last_name',
-      `competitor_phone` = '$this->phone'
+      `competitor_phone` = '$this->phone',
+      `competitor_team_id` = '$this->team_id'
       WHERE `competitors`.`competitor_id`='$id';";
       // prewrap($query);
       $result = mysqli_query($this->connection, $query);
@@ -165,6 +173,10 @@ class Competitor{
 
     public function set_phone($phone){
       $this->$phone = $phone;
+    }
+
+    public function set_team_id($team_id){
+      $this->$team_id = $team_id;
     }
   }
   // ********************** FOR TESTING PURPOSES *********************************

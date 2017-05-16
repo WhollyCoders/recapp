@@ -12,13 +12,15 @@ if(isset($_POST['update_competitor'])){
     $u_first_name   = $_POST['update_first'];
     $u_last_name    = $_POST['update_last'];
     $u_phone        = $_POST['update_phone'];
+    $u_team_id      = $_POST['update_team_id'];
 
     $update_params = array(
       'id'            =>  $u_id,
       'email'         =>  $u_email,
       'first_name'    =>  $u_first_name,
       'last_name'     =>  $u_last_name,
-      'phone'         =>  $u_phone
+      'phone'         =>  $u_phone,
+      'team_id'       =>  $u_team_id
     );
 
     $competitor->update_competitor($update_params);
@@ -27,19 +29,4 @@ if(isset($_POST['update_competitor'])){
         header('Location: ./competitors.php');
   }
 ?>
-<!-- <div class="container">
-  <h1>Update Competitor</h1>
-  <form class="form-add-competitor" action="" method="post">
-    <input type="hidden" name="update_id" value="<?php echo($id); ?>"><br>
-    Email:<br>
-    <input type="email" name="update_email" value="<?php echo($email); ?>"><br>
-    First Name:<br>
-    <input type="text" name="update_first" value="<?php echo($first); ?>"><br>
-    Last Name:<br>
-    <input type="text" name="update_last" value="<?php echo($last); ?>"><br>
-    Phone:<br>
-    <input type="text" name="update_phone" value="<?php echo($phone); ?>"><br>
-    <input type="submit" name="update_competitor" value="Update Competitor">
-  </form>
-</div> -->
 <?php include('./includes/footer.inc.php'); ?>

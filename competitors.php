@@ -20,6 +20,7 @@ $competitors = $competitor->get_competitors();
               <th>Last Name</th>
               <th>Email Address</th>
               <th>Phone Number</th>
+              <th>Team ID</th>
               <th>Date Added</th>
             </tr>
             <?php
@@ -31,6 +32,7 @@ $competitors = $competitor->get_competitors();
                 <td><?php echo($competitor['last_name']);?></td>
                 <td><?php echo($competitor['email']);?></td>
                 <td><?php echo($competitor['phone']);?></td>
+                <td><?php echo($competitor['team_id']);?></td>
                 <td><?php echo($competitor['date_entered']);?></td>
                 <td><a class="btn btn-primary" href="./editcompetitor.php?id=<?php echo($competitor['id']);?>">Update</a></td>
                 <td><a class="btn btn-danger" href="./delete.php?id=<?php echo($competitor['id']);?>">Delete</a></td>
@@ -58,6 +60,10 @@ $competitors = $competitor->get_competitors();
               <div class="form-group">
                 <label for="phone">Phone</label>
                 <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone">
+              </div>
+              <div class="form-group">
+                <label for="team_id">Team ID</label>
+                <input type="text" class="form-control" name="team_id" id="team_id" placeholder="Team ID">
               </div>
               <input class="btn btn-success btn-lg" type="submit" name="add_competitor" id="add_competitor" value="Submit">
             </form>

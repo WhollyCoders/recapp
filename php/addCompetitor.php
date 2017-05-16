@@ -13,12 +13,14 @@ if(isset($_POST['add_competitor'])){
   $first_name   = $_POST['first'];
   $last_name    = $_POST['last'];
   $phone        = $_POST['phone'];
+  $team_id      = $_POST['team_id'];
 
   $competitor_params = array(
     'email'         =>  $email,
     'first_name'    =>  $first_name,
     'last_name'     =>  $last_name,
-    'phone'         =>  $phone
+    'phone'         =>  $phone,
+    'team_id'       =>  $team_id
   );
   $competitor->insert_competitor($competitor_params);
   header('Location: ../competitors.php');

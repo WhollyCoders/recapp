@@ -90,6 +90,20 @@ class Team{
     if(!$result){echo('ONE TEAM SELECT | ***** ERROR!!! *****');}
     return $result;
   }
+
+// ********************** METHOD | GET ONE TEAM **********************************
+  public function get_team_members($id){
+    $result = $this->select_team_members($id);
+    $this->create_data_array($result);
+    return $this->data;
+  }
+// ********************** METHOD | SELECT ONE TEAM **********************************
+  protected function select_team_members($id){
+    $sql = "SELECT * FROM `competitors` WHERE team_id=$id";
+    $result = mysqli_query($this->connection, $sql);
+    if(!$result){echo('TEAM MEMBERS SELECT | ***** ERROR!!! *****');}
+    return $result;
+  }
 // ********************** METHOD | UPDATE TEAM **********************************
   public function edit_team($params){
     $this->set_params($params);
@@ -141,6 +155,9 @@ class Team{
 // echo('Team Date Entered: '.$team['team_date_entered'].'<br><br>');
 // }
 // echo($team->json);
+
+
+
 // ********************** TEST | SELECT ONE TEAM **********************************
 // $one_team = $team->get_team(3);
 

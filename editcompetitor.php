@@ -13,11 +13,12 @@ if(isset($_GET['id'])){
 
   if(!$competitor){echo('[SELECT COMPETITOR] --- There is an ERROR!!!');}
 // prewrap($competitor);
-    $id     = $competitor[0]['id'];
-    $email  = $competitor[0]['email'];
-    $first  = $competitor[0]['first_name'];
-    $last   = $competitor[0]['last_name'];
-    $phone  = $competitor[0]['phone'];
+    $id       = $competitor[0]['id'];
+    $email    = $competitor[0]['email'];
+    $first    = $competitor[0]['first_name'];
+    $last     = $competitor[0]['last_name'];
+    $phone    = $competitor[0]['phone'];
+    $team_id  = $competitor[0]['team_id'];
   }
 ?>
  <div class="container">
@@ -40,6 +41,10 @@ if(isset($_GET['id'])){
        <div class="form-group">
          <label for="update_phone">Phone</label>
          <input type="text" class="form-control" name="update_phone" id="update_phone" placeholder="Phone" value="<?php echo($phone); ?>">
+       </div>
+       <div class="form-group">
+         <label for="update_team_id">Team ID</label>
+         <input type="text" class="form-control" name="update_team_id" id="update_team_id" placeholder="Team ID" value="<?php echo($team_id); ?>">
        </div>
        <input type="submit" class="btn btn-default btn-lg" name="update_competitor" value="Update Competitor">
      </form>

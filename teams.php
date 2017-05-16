@@ -23,7 +23,7 @@ $teams = $team->get_teams();
         foreach($teams as $team){
           ?>
           <tr>
-            <td><?php echo($team['team_id']);?></td>
+            <td><a href="./viewteam.php?team=<?php echo($team['team_id']);?>"><?php echo($team['team_id']);?></a></td>
             <td><?php echo($team['team_name']);?></td>
             <td><?php echo($team['team_leader']);?></td>
             <td><?php echo($team['team_date_entered']);?></td>
