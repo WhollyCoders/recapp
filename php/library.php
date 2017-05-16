@@ -5,6 +5,10 @@ function prewrap($array){
   echo('</pre><br><hr>');
 }
 
+function redirect($path){
+  header('Location: '.$path);
+}
+
 function column_name_prefix($table_name, $column_name){
   return $table_name.'_'.$column_name;
 }

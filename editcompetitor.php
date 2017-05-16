@@ -23,7 +23,7 @@ if(isset($_GET['id'])){
  <div class="container">
    <h1>Update Competitor</h1>
    <div class="form-container">
-     <form class="form-add-competitor" action="update.php" method="post">
+     <form class="form-edit-competitor" action="updateCompetitor.php" method="post">
        <input type="hidden" name="update_id" value="<?php echo($id); ?>"><br>
        <div class="form-group">
          <label for="update_email">Email address</label>
@@ -41,7 +41,7 @@ if(isset($_GET['id'])){
          <label for="update_phone">Phone</label>
          <input type="text" class="form-control" name="update_phone" id="update_phone" placeholder="Phone" value="<?php echo($phone); ?>">
        </div>
-       <input type="submit" class="btn btn-default" name="update_competitor" value="Update Competitor">
+       <input type="submit" class="btn btn-default btn-lg" name="update_competitor" value="Update Competitor">
      </form>
    </div>
 

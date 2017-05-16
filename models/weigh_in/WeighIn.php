@@ -38,6 +38,7 @@ class WeighIn{
        `wi_week_id` INT UNSIGNED NOT NULL ,
        `wi_notes` TEXT NOT NULL ,
        `wi_date_entered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+       UNIQUE( `wi_competitor_id`, `wi_week_id`),
        PRIMARY KEY (`wi_id`)
        ) ENGINE = InnoDB;
       ";
@@ -94,17 +95,20 @@ class WeighIn{
 
     public function update_weigh_in($params){
       $id = $params['id'];
-      echo($id);
+      prewrap($id);
       $this->update_params($params);
-      $sql = "UPDATE `".$this->get_table_name()."`
-      SET `weigh_in_email` = '$this->email',
-      `weigh_in_first_name` = '$this->first_name',
-      `weigh_in_last_name` = '$this->last_name',
-      `weigh_in_phone` = '$this->phone'
-      WHERE `weigh_ins`.`weigh_in_id`='$id';";
-      // prewrap($query);
+      $sql = "UPDATE `weigh_ins` SET `wi_competitor_id`='$this->competitor_id',
+      `wi_team_id`='$this->team_id',
+      `wi_begin`='$this->begin',
+      `wi_previous`='$this->previous',
+      `wi_current`='$this->current',
+      `wi_week_id`='$this->week_id',
+      `wi_notes`='$this->notes'
+      WHERE `wi_id`='$id';";
+      prewrap($sql);
       $result = mysqli_query($this->connection, $sql);
-      return $result;
+        if(!$result){echo("[UPDATE ".$this->get_table_name()."] --- There has been an ERROR!!!");}
+      // return $result;
     }
 // GETTERS *******************************************************************
     public function get_db_name(){
@@ -137,11 +141,11 @@ class WeighIn{
       return $this->data;
     }
 
-    public function select_weigh_in($id){
-      $sql = "SELECT * FROM `".$this->get_table_name()."` WHERE wi_week_id = $id;";
-      prewrap($sql);
+    public function select_weigh_in($week_id){
+      $sql = "SELECT * FROM `".$this->get_table_name()."` WHERE wi_week_id = $week_id;";
+      // prewrap($sql);
       $result = mysqli_query($this->connection, $sql);
-      if(!$result){echo('[ GET ONE COMPETITOR DATA | ARRAY ] --- There has been an ERROR!!!');}
+      if(!$result){echo('[ GET ONE WEEK WEIGH_IN DATA | ARRAY ] --- There has been an ERROR!!!');}
       $this->data = array();
       while($row = mysqli_fetch_assoc($result)){
         $this->data[] = array(
@@ -160,13 +164,39 @@ class WeighIn{
       return $this->data;
     }
 
-    public function delete_weigh_in($id){
-      $query = "DELETE FROM `".$this->get_table_name()."` WHERE weigh_in_id = $id;";
-      // prewrap($query);
-      $result = mysqli_query($this->connection, $query);
-      return $result;
+    public function select_one_weigh_in($id){
+      $sql = "SELECT * FROM `".$this->get_table_name()."` WHERE wi_id = $id;";
+      // prewrap($sql);
+      $result = mysqli_query($this->connection, $sql);
+      if(!$result){echo('[ GET ONE COMPETITOR WEIGH_IN DATA | ARRAY ] --- There has been an ERROR!!!');}
+      $num_rows = mysqli_num_rows($result);
+      if($num_rows > 1){echo('[ GET ONE COMPETITOR WEIGH_IN DATA | ARRAY ] --- Check Weigh-In Data... There may be a DUPLICATE Weigh-In!!!');}
+      $this->data = array();
+      while($row = mysqli_fetch_assoc($result)){
+        $this->data[] = array(
+          'id'              =>    $row['wi_id'],
+          'competitor_id'   =>    $row['wi_competitor_id'],
+          'team_id'         =>    $row['wi_team_id'],
+          'begin'           =>    $row['wi_begin'],
+          'previous'        =>    $row['wi_previous'],
+          'current'         =>    $row['wi_current'],
+          'week_id'         =>    $row['wi_week_id'],
+          'notes'           =>    $row['wi_notes'],
+          'date_entered'    =>    $row['wi_date_entered']
+        );
+      }
+
+      $this->json = json_encode($this->data);
+      return $this->data;
     }
 
+    public function delete_weigh_in($id){
+      $sql = "DELETE FROM `".$this->get_table_name()."` WHERE wi_id = $id;";
+      // prewrap($query);
+      $result = mysqli_query($this->connection, $sql);
+      return $result;
+    }
+// ************************* SETTERS *****************************************
     public function set_id($id){
       $this->id = $id;
     }
@@ -259,7 +289,7 @@ class WeighIn{
   //   'week_id'         =>    $week_id,
   //   'notes'           =>    $notes
   // );
-
+  //
   // $data = $weigh_in->select_weigh_in(1);
   // prewrap($data);
   //   echo('ID: '.$data[0]['id'].'<br>');

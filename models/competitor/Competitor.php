@@ -1,4 +1,6 @@
 <?php
+// require('../../../myb4g-connect.php');
+// require('../../php/library.php');
 class Competitor{
     public $connection;
     public $db_name;
@@ -228,16 +230,15 @@ class Competitor{
   //   echo('Date Entered: '.$row['competitor_date_entered'].'<br>');
   // }
 
-
   // ***** DELETE *****
   // $competitor->delete_competitor(4);
   // $competitor->delete_competitor(7);
 
-
   //  ***** GET Data - Array | JSON *****
-  // $competitor->get_competitors_data_array();
+  // $competitor->get_competitors();
+  // $competitor->select_competitor($id);
   // prewrap($competitor->data_array);
-  // $json = $competitor->get_competitors_json();
+  // $json = $competitor->data_json();
   // echo($json);
 
   ?>

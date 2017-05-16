@@ -5,11 +5,14 @@ if(isset($_GET['week'])){
   require('../myb4g-connect.php');
   require('./php/library.php');
   require('./models/weigh_in/WeighIn.php');
+  require('./models/competitor/Competitor.php');
   $week = $_GET['week'];
   $weigh_in = new WeighIn($connection);
   // prewrap($weigh_in);
   $weigh_ins = $weigh_in->select_weigh_in($week);
+  $competitor = new Competitor($connection);
   // prewrap($competitor);
+  $competitors = $competitor->get_competitors();
 }else{
   header('Location: ./index.php');
 }
@@ -64,7 +67,17 @@ if(isset($_GET['week'])){
        <form class="form-add-weigh_in" action="./php/addWeighIn.php" method="post">
          <div class="form-group">
            <label for="competitor_id">Competitor ID</label>
-           <input type="text" class="form-control" name="competitor_id" id="competitor_id" placeholder="Competitor ID">
+           <select class="form-control" name="competitor_id" id="competitor_id">
+             <option value="" disabled selected>SELECT COMPETITOR</option>
+             <?php
+                  foreach ($competitors as $competitor) { ?>
+
+                        <option value="<?php echo($competitor['id']);?>"> <?php echo($competitor['id']);?> - <?php echo($competitor['first_name']);?> <?php echo($competitor['last_name']);?></option>
+
+                <?php  }
+              ?>
+           </select>
+           <!-- <input type="text" class="form-control" name="competitor_id" id="competitor_id" placeholder="Competitor ID"> -->
          </div>
          <div class="form-group">
            <label for="team_id">Team ID</label>
@@ -84,11 +97,14 @@ if(isset($_GET['week'])){
          </div>
          <div class="form-group">
            <label for="week_id">Week ID</label>
-           <input type="text" class="form-control" name="week_id" id="week_id" placeholder="Week ID">
+           <select class="form-control" name="week_id" id="week_id">
+             <option value=""></option>
+           </select>
+           <!-- <input type="text" class="form-control" name="week_id" id="week_id" placeholder="Week ID"> -->
          </div>
          <div class="form-group">
            <label for="notes">Notes</label>
-           <input type="text" class="form-control" name="notes" id="notes" placeholder="Notes">
+           <textarea class="form-control" name="notes" id="notes" rows="8" cols="80"  placeholder="Enter weigh-in notes here..."></textarea>
          </div>
          <input class="btn btn-success btn-lg" type="submit" name="add_weigh_in" id="add_weigh_in" value="Submit">
        </form>
