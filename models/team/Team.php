@@ -1,6 +1,4 @@
 <?php
-// require('../../../myb4g-connect.php');
-// require('../../php/library.php');
 class Team{
   // ********************** PROPERTIES **********************************
   public $connection;

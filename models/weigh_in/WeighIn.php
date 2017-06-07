@@ -3,26 +3,21 @@
 // require('../../php/library.php');
 class WeighIn{
     public $connection;
-    public $db_name;
-    public $table_name;
     public $id;
     public $competitor_id;
     public $team_id;
+    public $week_id;
     public $begin;
     public $previous;
     public $current;
-    public $week_id;
     public $notes;
-    public $data_array;
-    public $data_json;
+    public $results = array();
     public $data;
     public $json;
 
 
     public function __construct($connection){
       $this->connection = $connection;
-      $this->db_name    = 'mybod4god';
-      $this->table_name = 'weigh_ins';
       $this->create_weigh_in_table();
     }
 
@@ -44,13 +39,100 @@ class WeighIn{
       ";
 
       $result = mysqli_query($this->connection, $sql);
-      if(!$result){echo("[CREATE ".$this->get_table_name()." TABLE] --- There has been an ERROR!!!");}
+      if(!$result){echo("[ -CREATE WEIGH_INS TABLE- ] --- There has been an ERROR!!!");}
 
     }
 
+    public function get_total_weight_loss_competition($week_id){
+      $this->get_weigh_ins_by_week($week_id);
+      return $this->weight_loss();
+    }
+
+    public function weight_loss(){
+      return number_format($this->previous - $this->current, 1);
+    }
+    public function weight_loss_percent(){
+      return number_format(($this->weight_loss() / $this->previous) * 100, 6);;
+    }
+    public function overall_weight_loss(){
+      return number_format($this->begin - $this->current, 1);
+    }
+    public function overall_weight_loss_percent(){
+      return number_format(($this->overall_weight_loss() / $this->begin) * 100, 6);
+    }
+
+    public function compute_weigh_in_results($data){
+      $this->competitor_id                          = $data['competitor_id'];
+      $this->team_id                                = $data['team_id'];
+      $this->begin                                  = $data['begin'];
+      $this->previous                               = $data['previous'];
+      $this->current                                = $data['current'];
+      $this->results['weight_loss']                 = $this->weight_loss();
+      $this->results['weight_loss_percent']         = $this->weight_loss_percent();
+      $this->results['overall_weight_loss']         = $this->overall_weight_loss();
+      $this->results['overall_weight_loss_percent'] = $this->overall_weight_loss_percent();
+      // $this->insert_weigh_in_results();
+    }
+    public function insert_weigh_in_results(){
+      $sql = "INSERT INTO `results` (
+        `result_id`,
+        `result_competitor_id`,
+        `result_week_id`,
+        `result_weight_loss`,
+        `result_weight_loss_pct`,
+        `result_overall_weight_loss`,
+        `result_overall_weight_loss_pct`,
+        `result_team_id`,
+        `result_date_entered`
+      ) VALUES (
+        NULL,
+        '$this->competitor_id',
+        '$this->week_id',
+        '$this->results['weight_loss']',
+        '$this->results['weight_loss_percent']',
+        '$this->results['overall_weight_loss']',
+        '$this->results['overall_weight_loss_percent']',
+        '$this->team_id',
+        CURRENT_TIMESTAMP
+      );";
+      $result = mysqli_query($this->connection, $sql);
+    }
+
+
+    public function get_weigh_ins_by_week($week_id){
+      $this->week_id = $week_id;
+      $sql = "SELECT * FROM weigh_ins WHERE wi_week_id='$this->week_id';";
+      $result = mysqli_query($this->connection, $sql);
+      $this->data = array();
+      $begin    = 0;
+      $previous = 0;
+      $current  = 0;
+      if($result){
+        while($row = mysqli_fetch_assoc($result)){
+          $weigh_in_data = array(
+            'competitor_id'     =>    $row['wi_competitor_id'],
+            'team_id'           =>    $row['wi_team_id'],
+            'begin'             =>    $row['wi_begin'],
+            'previous'          =>    $row['wi_previous'],
+            'current'           =>    $row['wi_current']
+          );
+          $begin    += $row['wi_begin'];
+          $previous += $row['wi_previous'];
+          $current  += $row['wi_current'];
+          $this->compute_weigh_in_results($weigh_in_data);
+          $this->data[] = $weigh_in_data;
+        }
+        $this->begin    = $begin;
+        $this->previous = $previous;
+        $this->current  = $current;
+      }
+    }
+
+
+
 // INSERT WEIGH IN ****************************************************
     public function get_insert_query(){
-      return $sql = "INSERT INTO `".$this->get_table_name()."` (
+      return $sql = "INSERT INTO `weigh_ins` (
           `wi_id`,
           `wi_competitor_id`,
           `wi_team_id`,
@@ -78,7 +160,7 @@ class WeighIn{
       $this->create_weigh_in_table();
       $sql = $this->get_insert_query();
       $result = mysqli_query($this->connection, $sql);
-      if(!$result){echo("[INSERT ".$this->get_table_name()."] --- There has been an ERROR!!!");}
+      if(!$result){echo("[INSERT WEIGH_IN] --- There has been an ERROR!!!");}
     }
 
 // UPDATE WEIGH IN ************************************************************
@@ -95,7 +177,7 @@ class WeighIn{
 
     public function update_weigh_in($params){
       $id = $params['id'];
-      prewrap($id);
+      // prewrap($id);
       $this->update_params($params);
       $sql = "UPDATE `weigh_ins` SET `wi_competitor_id`='$this->competitor_id',
       `wi_team_id`='$this->team_id',
@@ -105,24 +187,18 @@ class WeighIn{
       `wi_week_id`='$this->week_id',
       `wi_notes`='$this->notes'
       WHERE `wi_id`='$id';";
-      prewrap($sql);
+      // prewrap($sql);
       $result = mysqli_query($this->connection, $sql);
-        if(!$result){echo("[UPDATE ".$this->get_table_name()."] --- There has been an ERROR!!!");}
+        if(!$result){echo("[ -UPDATE WEIGH_INS- ] --- There has been an ERROR!!!");}
       // return $result;
     }
 // GETTERS *******************************************************************
-    public function get_db_name(){
-      return $this->db_name;
-    }
-    public function get_table_name(){
-      return $this->table_name;
-    }
 
     public function get_weigh_ins(){
       $sql = "SELECT * FROM weigh_ins;";
       // prewrap($sql);
       $this->result = mysqli_query($this->connection, $sql);
-      if(!$this->result){echo('[GET COMPETITORS DATA | ARRAY] --- There has been an ERROR!!!');}
+      if(!$this->result){echo('[GET WEIGH-IN DATA | ARRAY] --- There has been an ERROR!!!');}
       $this->data = array();
       while($row = mysqli_fetch_assoc($this->result)){
         $this->data[] = array(
@@ -141,8 +217,56 @@ class WeighIn{
       return $this->data;
     }
 
+    public function get_weigh_ins_team($id){
+      $sql = "SELECT * FROM weigh_ins WHERE wi_team_id=$id;";
+      // prewrap($sql);
+      $this->result = mysqli_query($this->connection, $sql);
+      if(!$this->result){echo('[GET TEAM WEIGH-IN DATA | ARRAY] --- There has been an ERROR!!!');}
+      $this->data = array();
+      while($row = mysqli_fetch_assoc($this->result)){
+        $this->data[] = array(
+          'id'              =>    $row['wi_id'],
+          'competitor_id'   =>    $row['wi_competitor_id'],
+          'team_id'         =>    $row['wi_team_id'],
+          'begin'           =>    $row['wi_begin'],
+          'previous'        =>    $row['wi_previous'],
+          'current'         =>    $row['wi_current'],
+          'week_id'         =>    $row['wi_week_id'],
+          'notes'           =>    $row['wi_notes'],
+          'date_entered'    =>    $row['wi_date_entered']
+        );
+      }
+      $this->json = json_encode($this->data);
+      // prewrap($this->data);
+      return $this->data;
+    }
+
+    public function get_weigh_ins_team_week($id, $week){
+      $sql = "SELECT * FROM weigh_ins WHERE wi_team_id=$id AND wi_week_id=$week;";
+      // prewrap($sql);
+      $this->result = mysqli_query($this->connection, $sql);
+      if(!$this->result){echo('[GET TEAM WEIGH-IN DATA | ARRAY] --- There has been an ERROR!!!');}
+      $this->data = array();
+      while($row = mysqli_fetch_assoc($this->result)){
+        $this->data[] = array(
+          'id'              =>    $row['wi_id'],
+          'competitor_id'   =>    $row['wi_competitor_id'],
+          'team_id'         =>    $row['wi_team_id'],
+          'begin'           =>    $row['wi_begin'],
+          'previous'        =>    $row['wi_previous'],
+          'current'         =>    $row['wi_current'],
+          'week_id'         =>    $row['wi_week_id'],
+          'notes'           =>    $row['wi_notes'],
+          'date_entered'    =>    $row['wi_date_entered']
+        );
+      }
+      $this->json = json_encode($this->data);
+      // prewrap($this->data);
+      return $this->data;
+    }
+
     public function select_weigh_in($week_id){
-      $sql = "SELECT * FROM `".$this->get_table_name()."` WHERE wi_week_id = $week_id;";
+      $sql = "SELECT * FROM `weigh_ins` WHERE wi_week_id = $week_id;";
       // prewrap($sql);
       $result = mysqli_query($this->connection, $sql);
       if(!$result){echo('[ GET ONE WEEK WEIGH_IN DATA | ARRAY ] --- There has been an ERROR!!!');}
@@ -165,7 +289,7 @@ class WeighIn{
     }
 
     public function select_one_weigh_in($id){
-      $sql = "SELECT * FROM `".$this->get_table_name()."` WHERE wi_id = $id;";
+      $sql = "SELECT * FROM `weigh_ins` WHERE wi_id = $id;";
       // prewrap($sql);
       $result = mysqli_query($this->connection, $sql);
       if(!$result){echo('[ GET ONE COMPETITOR WEIGH_IN DATA | ARRAY ] --- There has been an ERROR!!!');}
@@ -191,42 +315,12 @@ class WeighIn{
     }
 
     public function delete_weigh_in($id){
-      $sql = "DELETE FROM `".$this->get_table_name()."` WHERE wi_id = $id;";
+      $sql = "DELETE FROM `weigh_ins` WHERE wi_id = $id;";
       // prewrap($query);
       $result = mysqli_query($this->connection, $sql);
       return $result;
     }
-// ************************* SETTERS *****************************************
-    public function set_id($id){
-      $this->id = $id;
-    }
 
-    public function set_competitor_id($competitor_id){
-      $this->competitor_id = $competitor_id;
-    }
-
-    public function set_team_id($team_id){
-      $this->team_id = $team_id;
-    }
-
-    public function set_begin($begin){
-      $this->begin = $begin;
-    }
-
-    public function set_previous($previous){
-      $this->$previous = $previous;
-    }
-
-    public function set_current($current){
-      $this->$current = $current;
-    }
-    public function set_week_id($week_id){
-      $this->$week_id = $week_id;
-    }
-
-    public function set_notes($notes){
-      $this->$notes = $notes;
-    }
   }
   // ********************** FOR TESTING PURPOSES *********************************
   // $weigh_in = new WeighIn($connection);
@@ -262,6 +356,12 @@ class WeighIn{
   // $data = $weigh_in->get_weigh_ins();
   // prewrap($data);
   // echo($weigh_in->json);
+
+// $id = 2;
+// $week = 1;
+// $data = $weigh_in->get_weigh_ins_team_week($id, $week);
+// prewrap($data[0]['begin']);
+
 
   // $data = $weigh_in->select_weigh_in(2);
   // prewrap($data);

@@ -1,6 +1,6 @@
 <?php
   $page_title = 'Update Team';
-  include('./includes/header.inc.php');
+  // include('./includes/header.inc.php');
 if(isset($_POST['update_team'])){
   require('../myb4g-connect.php');
   require('./php/library.php');
@@ -18,7 +18,7 @@ if(isset($_POST['update_team'])){
     );
 
     $team->edit_team($params);
-    prewrap($team);
+    // prewrap($team);
 
     header('Location: ./teams.php');
   }else{

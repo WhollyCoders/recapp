@@ -1,6 +1,6 @@
 <?php
   $page_title = 'Team Delete - Confirmation';
-  include('./includes/header.inc.php');
+  // include('./includes/header.inc.php');
   require('../myb4g-connect.php');
   require('./php/library.php');
   require('./models/team/Team.php');

@@ -3,11 +3,15 @@ $page_title = 'Competitors';
 require('../myb4g-connect.php');
 require('./php/library.php');
 require('./models/competitor/Competitor.php');
+require('./models/team/Team.php');
 include('./includes/header.inc.php');
 $competitor = new Competitor($connection);
 // prewrap($competitor);
 $competitors = $competitor->get_competitors();
 // prewrap($competitor);
+
+$team = new Team($connection);
+$teams = $team->get_teams();
 ?>
     <div class="container">
       <div class="row">
@@ -63,7 +67,16 @@ $competitors = $competitor->get_competitors();
               </div>
               <div class="form-group">
                 <label for="team_id">Team ID</label>
-                <input type="text" class="form-control" name="team_id" id="team_id" placeholder="Team ID">
+                <select class="form-control" name="team_id" id="team_id">
+                  <option value="" disabled selected>*** SELECT TEAM ***</option>
+                  <?php
+                       foreach ($teams as $team) { ?>
+
+                             <option value="<?php echo($team['team_id']);?>"><?php echo($team['team_name']);?></option>
+
+                     <?php  }
+                   ?>
+                </select>
               </div>
               <input class="btn btn-success btn-lg" type="submit" name="add_competitor" id="add_competitor" value="Submit">
             </form>

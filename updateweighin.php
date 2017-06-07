@@ -1,6 +1,6 @@
 <?php
   $page_title = 'Update Weigh-In';
-  include('./includes/header.inc.php');
+  // include('./includes/header.inc.php');
 if(isset($_POST['update_wi'])){
   require('../myb4g-connect.php');
   require('./php/library.php');

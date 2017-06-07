@@ -9,7 +9,7 @@ if(isset($_GET['id'])){
   $team = new Team($connection);
   $one_team = $team->get_team($id);
 
-  prewrap($one_team[0]);
+  // prewrap($one_team[0]);
   //
   // foreach ($one_team as $team) {
   // echo('Team ID: '.$team['team_id'].'<br>');

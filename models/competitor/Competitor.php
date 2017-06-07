@@ -90,8 +90,30 @@ class Competitor{
         $this->data_array[] = array(
           'id'            =>    $row['competitor_id'],
           'email'         =>    $row['competitor_email'],
-          'first_name'    =>    $row['competitor_first_name'],
-          'last_name'     =>    $row['competitor_last_name'],
+          'first_name'    =>    $row['competitor_firstname'],
+          'last_name'     =>    $row['competitor_lastname'],
+          'phone'         =>    $row['competitor_phone'],
+          'team_id'       =>    $row['competitor_team_id'],
+          'date_entered'  =>    $row['competitor_date_entered']
+        );
+      }
+      $this->data_json = json_encode($this->data_array);
+      return $this->data_array;
+    }
+
+    public function get_competitors_team($id){
+      $query = "SELECT * FROM competitors WHERE competitor_team_id=$id;";
+      // prewrap($this->connection);
+      // prewrap($query);
+      $this->result = mysqli_query($this->connection, $query);
+      if(!$this->result){echo('[GET COMPETITORS DATA | ARRAY] --- There has been an ERROR!!!');}
+      $this->data_array = array();
+      while($row = mysqli_fetch_assoc($this->result)){
+        $this->data_array[] = array(
+          'id'            =>    $row['competitor_id'],
+          'email'         =>    $row['competitor_email'],
+          'first_name'    =>    $row['competitor_firstname'],
+          'last_name'     =>    $row['competitor_lastname'],
           'phone'         =>    $row['competitor_phone'],
           'team_id'       =>    $row['competitor_team_id'],
           'date_entered'  =>    $row['competitor_date_entered']

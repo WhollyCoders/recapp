@@ -28,7 +28,7 @@
                 <li><a href="./competitors">Competitors</a></li>
                 <li><a href="./teams">Teams</a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Weeks <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Weigh-Ins <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a href="weighins.php?week=1">Week 1</a></li>
                     <li><a href="weighins.php?week=2">Week 2</a></li>
@@ -42,6 +42,23 @@
                     <li><a href="weighins.php?week=8">Week 8</a></li>
                     <li><a href="weighins.php?week=9">Week 9</a></li>
                     <li><a href="weighins.php?week=10">Week 10</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Results <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="results.php?week=1">Week 1</a></li>
+                    <li><a href="results.php?week=2">Week 2</a></li>
+                    <li><a href="results.php?week=3">Week 3</a></li>
+                    <!-- <li role="separator" class="divider"></li>
+                    <li class="dropdown-header">Nav header</li> -->
+                    <li><a href="results.php?week=4">Week 4</a></li>
+                    <li><a href="results.php?week=5">Week 5</a></li>
+                    <li><a href="results.php?week=6">Week 6</a></li>
+                    <li><a href="results.php?week=7">Week 7</a></li>
+                    <li><a href="results.php?week=8">Week 8</a></li>
+                    <li><a href="results.php?week=9">Week 9</a></li>
+                    <li><a href="results.php?week=10">Week 10</a></li>
                   </ul>
                 </li>
                 <li><a href="./upload">Upload Weigh-in</a></li>

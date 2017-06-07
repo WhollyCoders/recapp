@@ -6,6 +6,7 @@ if(isset($_GET['week'])){
   require('./php/library.php');
   require('./models/weigh_in/WeighIn.php');
   require('./models/competitor/Competitor.php');
+  require('./models/team/Team.php');
   $week = $_GET['week'];
   $weigh_in = new WeighIn($connection);
   // prewrap($weigh_in);
@@ -13,6 +14,11 @@ if(isset($_GET['week'])){
   $competitor = new Competitor($connection);
   // prewrap($competitor);
   $competitors = $competitor->get_competitors();
+
+  $team = new Team($connection);
+  $teams = $team->get_teams();
+  // prewrap($teams);
+  include('./includes/weeks-array.inc.php');
 }else{
   header('Location: ./index.php');
 }
@@ -68,20 +74,28 @@ if(isset($_GET['week'])){
          <div class="form-group">
            <label for="competitor_id">Competitor ID</label>
            <select class="form-control" name="competitor_id" id="competitor_id">
-             <option value="" disabled selected>SELECT COMPETITOR</option>
+             <option value="" disabled selected>*** SELECT COMPETITOR ***</option>
              <?php
                   foreach ($competitors as $competitor) { ?>
 
-                        <option value="<?php echo($competitor['id']);?>"> <?php echo($competitor['id']);?> - <?php echo($competitor['first_name']);?> <?php echo($competitor['last_name']);?></option>
+                        <option value="<?php echo($competitor['id']);?>"><?php echo($competitor['first_name']);?> <?php echo($competitor['last_name']);?></option>
 
                 <?php  }
               ?>
            </select>
-           <!-- <input type="text" class="form-control" name="competitor_id" id="competitor_id" placeholder="Competitor ID"> -->
          </div>
          <div class="form-group">
            <label for="team_id">Team ID</label>
-           <input type="text" class="form-control" name="team_id" id="team_id" placeholder="Team ID">
+           <select class="form-control" name="team_id" id="team_id">
+             <option value="" disabled selected>*** SELECT TEAM ***</option>
+             <?php
+                  foreach ($teams as $team) { ?>
+
+                        <option value="<?php echo($team['team_id']);?>"><?php echo($team['team_name']);?></option>
+
+                <?php  }
+              ?>
+           </select>
          </div>
          <div class="form-group">
            <label for="begin_weight">Beginning Weight</label>
@@ -98,9 +112,15 @@ if(isset($_GET['week'])){
          <div class="form-group">
            <label for="week_id">Week ID</label>
            <select class="form-control" name="week_id" id="week_id">
-             <option value=""></option>
+             <option value="" disabled selected>*** SELECT WEEK ***</option>
+             <?php
+                  foreach ($weeks as $week) { ?>
+
+                        <option value="<?php echo($week['week_id']);?>"><?php echo($week['week_name']);?></option>
+
+                <?php  }
+              ?>
            </select>
-           <!-- <input type="text" class="form-control" name="week_id" id="week_id" placeholder="Week ID"> -->
          </div>
          <div class="form-group">
            <label for="notes">Notes</label>
