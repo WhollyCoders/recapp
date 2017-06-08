@@ -3,7 +3,7 @@ $page_title = 'Add Competitor';
 
 require('./library.php');
 require('../models/competitor/Competitor.php');
-include('../includes/header.inc.php');
+// include('../includes/header.inc.php');
 
 if(isset($_POST['add_competitor'])){
   require('../../myb4g-connect.php');

@@ -33,6 +33,14 @@ class Competitor{
       if(!$result){echo('[INSERT CONTACT] --- There has been an ERROR!!!');}
     }
 
+    public function update_params($params){
+      $this->email        = $params['email'];
+      $this->first_name   = ucfirst($params['first_name']);
+      $this->last_name    = ucfirst($params['last_name']);
+      $this->phone        = $params['phone'];
+      $this->team_id      = $params['team_id'];
+    }
+
     public function create_competitor_table(){
       $query = $this->get_create_table_query();
       // prewrap($query);
@@ -47,11 +55,11 @@ class Competitor{
       return $this->table_name;
     }
     public function get_insert_query(){
-      return "INSERT INTO `".$this->get_table_name()."` (
+      return "INSERT INTO `competitors` (
         `competitor_id`,
         `competitor_email`,
-        `competitor_first_name`,
-        `competitor_last_name`,
+        `competitor_firstname`,
+        `competitor_lastname`,
         `competitor_phone`,
         `competitor_team_id`,
         `competitor_date_entered`
@@ -77,6 +85,18 @@ class Competitor{
         `competitor_date_entered` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
         PRIMARY KEY (`competitor_id`)
       ) ENGINE = InnoDB;";
+    }
+
+    public function get_competitor($competitor_id){
+      $sql = "SELECT * FROM competitors
+      WHERE competitor_id='$competitor_id';";
+      $result = mysqli_query($this->connection, $sql);
+      if($result){
+        $row = mysqli_fetch_assoc($result);
+        $firstname  = $row['competitor_firstname'];
+        $lastname   = $row['competitor_lastname'];
+        return $firstname.' '.$lastname;
+      }
     }
 
     public function get_competitors(){
@@ -135,8 +155,8 @@ class Competitor{
         $this->single_array[] = array(
           'id'            =>    $row['competitor_id'],
           'email'         =>    $row['competitor_email'],
-          'first_name'    =>    $row['competitor_first_name'],
-          'last_name'     =>    $row['competitor_last_name'],
+          'first_name'    =>    $row['competitor_firstname'],
+          'last_name'     =>    $row['competitor_lastname'],
           'phone'         =>    $row['competitor_phone'],
           'team_id'       =>    $row['competitor_team_id'],
           'date_entered'  =>    $row['competitor_date_entered']
@@ -146,22 +166,14 @@ class Competitor{
       return $this->single_array;
     }
 
-    public function update_params($params){
-      $this->email        = $params['email'];
-      $this->first_name   = $params['first_name'];
-      $this->last_name    = $params['last_name'];
-      $this->phone        = $params['phone'];
-      $this->team_id      = $params['team_id'];
-    }
-
     public function update_competitor($update_params){
       $id = $update_params['id'];
       echo($id);
       $this->update_params($update_params);
       $query = "UPDATE `competitors`
       SET `competitor_email` = '$this->email',
-      `competitor_first_name` = '$this->first_name',
-      `competitor_last_name` = '$this->last_name',
+      `competitor_firstname` = '$this->first_name',
+      `competitor_lastname` = '$this->last_name',
       `competitor_phone` = '$this->phone',
       `competitor_team_id` = '$this->team_id'
       WHERE `competitors`.`competitor_id`='$id';";

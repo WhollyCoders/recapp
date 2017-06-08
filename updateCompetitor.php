@@ -1,6 +1,6 @@
 <?php
   $page_title = 'Update Competitor';
-  include('./includes/header.inc.php');
+  // include('./includes/header.inc.php');
 if(isset($_POST['update_competitor'])){
   require('../myb4g-connect.php');
   require('./php/library.php');

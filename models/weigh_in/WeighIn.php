@@ -48,6 +48,11 @@ class WeighIn{
       return $this->weight_loss();
     }
 
+    public function get_overall_total_weight_loss_competition($week_id){
+      $this->get_weigh_ins_by_week($week_id);
+      return $this->overall_weight_loss();
+    }
+
     public function weight_loss(){
       return number_format($this->previous - $this->current, 1);
     }
@@ -71,7 +76,7 @@ class WeighIn{
       $this->results['weight_loss_percent']         = $this->weight_loss_percent();
       $this->results['overall_weight_loss']         = $this->overall_weight_loss();
       $this->results['overall_weight_loss_percent'] = $this->overall_weight_loss_percent();
-      // $this->insert_weigh_in_results();
+      $this->insert_weigh_in_results();
     }
     public function insert_weigh_in_results(){
       $sql = "INSERT INTO `results` (
@@ -319,6 +324,10 @@ class WeighIn{
       // prewrap($query);
       $result = mysqli_query($this->connection, $sql);
       return $result;
+    }
+
+    public function set_id($id){
+      $this->id = $id;
     }
 
   }
