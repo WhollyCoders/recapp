@@ -66,6 +66,8 @@ class WeighIn{
       return number_format(($this->overall_weight_loss() / $this->begin) * 100, 6);
     }
 
+    public function compute_results(){}
+
     public function compute_weigh_in_results($data){
       $this->competitor_id                          = $data['competitor_id'];
       $this->team_id                                = $data['team_id'];
@@ -93,10 +95,10 @@ class WeighIn{
         NULL,
         '$this->competitor_id',
         '$this->week_id',
-        '$this->results['weight_loss']',
-        '$this->results['weight_loss_percent']',
-        '$this->results['overall_weight_loss']',
-        '$this->results['overall_weight_loss_percent']',
+        '{$this->results['weight_loss']}',
+        '{$this->results['weight_loss_percent']}',
+        '{$this->results['overall_weight_loss']}',
+        '{$this->results['overall_weight_loss_percent']}',
         '$this->team_id',
         CURRENT_TIMESTAMP
       );";

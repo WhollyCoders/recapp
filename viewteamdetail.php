@@ -9,7 +9,8 @@ require('./models/team/Team.php');
 if(isset($_GET['team']) && isset($_GET['week'])){
 $team_id  = $_GET['team'];
 $week     = $_GET['week'];
-$name     = $_GET['name'];
+$team     = new Team($connection);
+$name     = $team->get_team($team_id);
 
 $weigh_in = new WeighIn($connection);
 $weigh_ins = $weigh_in->get_weigh_ins_team_week($team_id, $week);
@@ -43,5 +44,12 @@ $weigh_ins = $weigh_in->get_weigh_ins_team_week($team_id, $week);
         </tr>
     <?php  } ?>
   </table>
+  <?php
+    $previous = $week - 1;
+    $next     = $week +1;
+    $previous = ($previous < 1) ? $week :  $previous;
+    $next     = ($next > 10) ? $week :  $next;
+   echo('<a href="viewteamdetail.php?team='.$team_id.'&week='.$previous.'"> < prev</a> | <a href="viewteamdetail.php?team='.$team_id.'&week='.$next.'"> next ></a>');
+   ?>
 </div>
 <?php include('./includes/footer.inc.php'); ?>

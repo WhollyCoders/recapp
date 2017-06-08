@@ -26,6 +26,7 @@ $week = new Week($connection);
 $week_ending = $week->get_week_end($week_id + 1);
 
 $weigh_in = new WeighIn($connection);
+$weigh_in->compute_results();
 $total_weight_loss = $weigh_in->get_total_weight_loss_competition($week_id);
 $overall_total_weight_loss = $weigh_in->get_overall_total_weight_loss_competition($week_id);
 
@@ -34,6 +35,7 @@ $teams = $team->get_teams();
 
 $res = new Result($connection);
 $iwl_leaders = $res->get_individual_weight_loss($week_id);
+$owl_leaders = $res->get_overall_weight_loss($week_id);
 
 $comp = new Competitor($connection);
 // $comp->get_competitor($competitor_id);
@@ -54,11 +56,20 @@ $comp = new Competitor($connection);
 <ol>
   <?php foreach ($iwl_leaders as $leader) { ?>
     <li><?php
+    $current_team = $team->get_team($leader['team_id']);
     $comp_name = $comp->get_competitor($leader['competitor_id']);
-    echo($comp_name.' - '.$leader['team_id'].' ( '.$leader['weight_loss'].' ) '.$leader['weight_loss_pct'].'%'); ?></li>
+    echo($comp_name.' - '.$current_team.' ( '.$leader['weight_loss'].' ) '.$leader['weight_loss_pct'].'%'); ?></li>
   <?php  } ?>
 </ol>
 <h3>Overall Individual Weight Loss</h3>
+<ol>
+  <?php foreach ($owl_leaders as $leader) { ?>
+    <li><?php
+    $current_team = $team->get_team($leader['team_id']);
+    $comp_name = $comp->get_competitor($leader['competitor_id']);
+    echo($comp_name.' - '.$current_team.' ( '.$leader['weight_loss'].' ) '.$leader['weight_loss_pct'].'%'); ?></li>
+  <?php  } ?>
+</ol>
 <h3>Weekly Team Weight Loss</h3>
 <h3>Overall Team Weight Loss</h3>
 <a href="results.php?week=<?php echo($prev_result);?>"> < prev</a> | <a href="results.php?week=<?php echo($next_result);?>"> next ></a>

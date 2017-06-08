@@ -78,8 +78,12 @@ class Team{
 // ********************** METHOD | GET ONE TEAM **********************************
   public function get_team($id){
     $result = $this->select_team($id);
-    $this->create_data_array($result);
-    return $this->data;
+    if($result){
+      $row = mysqli_fetch_assoc($result);
+      $this->data = $row;
+      $this->json = json_encode($this->data);
+      return $row['team_name'];
+    }
   }
 // ********************** METHOD | SELECT ONE TEAM **********************************
   protected function select_team($id){

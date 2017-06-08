@@ -25,6 +25,14 @@ class Result{
     return $weight_loss_results = $this->get_data($result);
   }
 
+  public function get_overall_weight_loss($week_id){
+    $sql = "SELECT * FROM results
+    WHERE result_week_id='$week_id' ORDER BY result_overall_weight_loss_pct
+    DESC LIMIT 3;";
+    $result = mysqli_query($this->connection, $sql);
+    return $overall_weight_loss_results = $this->get_data($result);
+  }
+
   public function get_data($result){
     if($result){
       $this->data = array();
