@@ -53,6 +53,45 @@ class WeighIn{
       return $this->overall_weight_loss();
     }
 
+    public function get_total_team_weight_loss_competition($week_id){
+      $sql = "SELECT * FROM team_results
+      WHERE team_result_week_id='$week_id'
+      ORDER BY team_result_weight_loss_pct DESC
+      LIMIT 3";
+      $result = mysqli_query($this->connection, $sql);
+      return $this->team_weight_loss_data($result);
+    }
+
+    public function get_overall_total_team_weight_loss_competition($week_id){
+      $sql = "SELECT * FROM team_results
+      WHERE team_result_week_id='$week_id'
+      ORDER BY team_result_overall_weight_loss_pct DESC
+      LIMIT 3";
+      $result = mysqli_query($this->connection, $sql);
+      return $this->team_weight_loss_data($result);
+    }
+
+    public function team_weight_loss_data($result){
+      return $this->get_team_result_data($result);
+    }
+
+    public function get_team_result_data($result){
+      $data = array();
+      if($result){
+        while($row = mysqli_fetch_assoc($result)){
+          $data[] = array(
+            'team_id'                   =>    $row['team_result_team_id'],
+            'weight_loss'               =>    $row['team_result_weight_loss'],
+            'weight_loss_pct'           =>    $row['team_result_weight_loss_pct'],
+            'overall_weight_loss'       =>    $row['team_result_overall_weight_loss'],
+            'overall_weight_loss_pct'   =>    $row['team_result_overall_weight_loss_pct'],
+          );
+        }
+        $this->data = $data;
+        $this->json = json_encode($data);
+        return $data;
+      }
+    }
     public function weight_loss(){
       return number_format($this->previous - $this->current, 1);
     }
@@ -80,6 +119,7 @@ class WeighIn{
       $this->results['overall_weight_loss_percent'] = $this->overall_weight_loss_percent();
       $this->insert_weigh_in_results();
     }
+
     public function insert_weigh_in_results(){
       $sql = "INSERT INTO `results` (
         `result_id`,

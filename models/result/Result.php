@@ -30,7 +30,7 @@ class Result{
     WHERE result_week_id='$week_id' ORDER BY result_overall_weight_loss_pct
     DESC LIMIT 3;";
     $result = mysqli_query($this->connection, $sql);
-    return $overall_weight_loss_results = $this->get_data($result);
+    return $overall_weight_loss_results = $this->get_overall_data($result);
   }
 
   public function get_data($result){
@@ -42,6 +42,22 @@ class Result{
           'team_id'           =>    $row['result_team_id'],
           'weight_loss'       =>    $row['result_weight_loss'],
           'weight_loss_pct'   =>    $row['result_weight_loss_pct']
+        );
+      }
+      $this->json = json_encode($this->data);
+      return $this->data;
+    }
+  }
+
+  public function get_overall_data($result){
+    if($result){
+      $this->data = array();
+      while($row = mysqli_fetch_assoc($result)){
+        $this->data[] = array(
+          'competitor_id'             =>    $row['result_competitor_id'],
+          'team_id'                   =>    $row['result_team_id'],
+          'overall_weight_loss'       =>    $row['result_overall_weight_loss'],
+          'overall_weight_loss_pct'   =>    $row['result_overall_weight_loss_pct']
         );
       }
       $this->json = json_encode($this->data);
