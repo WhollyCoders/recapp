@@ -43,6 +43,63 @@ class WeighIn{
 
     }
 
+    public function get_most_raw_pounds($week_id){
+      $sql = "SELECT * FROM results
+      WHERE result_week_id='$week_id'
+      ORDER BY result_overall_weight_loss
+      DESC LIMIT 3;";
+      $result = mysqli_query($this->connection, $sql);
+      return $most_raw_pounds = $this->get_most_raw_pounds_data($result);
+    }
+
+    public function get_most_raw_pounds_data($result){
+      $data = array();
+      if($result){
+        while($row = mysqli_fetch_assoc($result)){
+          $data[] = array(
+            'competitor_id'             =>    $row['result_competitor_id'],
+            'team_id'                   =>    $row['result_team_id'],
+            'weight_loss'               =>    $row['result_weight_loss'],
+            'weight_loss_pct'           =>    $row['result_weight_loss_pct'],
+            'overall_weight_loss'       =>    $row['result_overall_weight_loss'],
+            'overall_weight_loss_pct'   =>    $row['result_overall_weight_loss_pct'],
+          );
+        }
+        $this->data = $data;
+        $this->json = json_encode($data);
+        return $data;
+      }
+    }
+
+
+    public function get_biggest_loser($week_id){
+      $sql = "SELECT * FROM results
+      WHERE result_week_id='$week_id'
+      ORDER BY result_overall_weight_loss_pct
+      DESC LIMIT 1;";
+      $result = mysqli_query($this->connection, $sql);
+      return $biggest_loser = $this->get_biggest_loser_data($result);
+    }
+
+    public function get_biggest_loser_data($result){
+      $data = array();
+      if($result){
+        while($row = mysqli_fetch_assoc($result)){
+          $data[] = array(
+            'competitor_id'             =>    $row['result_competitor_id'],
+            'team_id'                   =>    $row['result_team_id'],
+            'weight_loss'               =>    $row['result_weight_loss'],
+            'weight_loss_pct'           =>    $row['result_weight_loss_pct'],
+            'overall_weight_loss'       =>    $row['result_overall_weight_loss'],
+            'overall_weight_loss_pct'   =>    $row['result_overall_weight_loss_pct'],
+          );
+          $this->data = $data;
+          $this->json = json_encode($data);
+          return $data;
+        }
+      }
+    }
+
     public function get_total_weight_loss_competition($week_id){
       $this->get_weigh_ins_by_week($week_id);
       return $this->weight_loss();
@@ -92,6 +149,72 @@ class WeighIn{
         return $data;
       }
     }
+
+    public function compute_results($week_id){
+      $this->create_results_table();
+      $this->week_id = $week_id;
+      // Select all weigh_ins for current week
+      $this->get_weigh_ins_week();
+      // Loop through weigh_in data
+      // Compute weigh_in results
+      // Insert weigh_in results into results table
+    }
+
+    public function create_results_table(){
+      $sql = $this->get_create_table_query();
+      $result = mysqli_query($this->connection, $sql);
+      if(!$result){echo(' -CREATE RESULTS TABLE- | ***** ERROR *****');}
+    }
+
+    public function get_create_table_query(){
+        return $sql = "CREATE TABLE IF NOT EXISTS `mybod4god`.`results` (
+         `result_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+         `result_competitor_id` INT UNSIGNED NOT NULL ,
+         `result_week_id` INT UNSIGNED NOT NULL ,
+         `result_weight_loss` DECIMAL(4,1) NOT NULL ,
+         `result_weight_loss_pct` DECIMAL(8,6) NOT NULL ,
+         `result_overall_weight_loss` DECIMAL(4,1) NOT NULL ,
+         `result_overall_weight_loss_pct` DECIMAL(8,6) NOT NULL ,
+         `result_team_id` INT UNSIGNED NOT NULL ,
+         `result_date_entered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+         UNIQUE( `result_competitor_id`, `result_week_id`),
+         PRIMARY KEY (`result_id`)
+         ) ENGINE = InnoDB;";
+    }
+
+    public function get_weigh_ins_week(){
+      $sql = "SELECT * FROM weigh_ins WHERE wi_week_id='$this->week_id';";
+      // prewrap($sql);
+      $result = mysqli_query($this->connection, $sql);
+      if(!$result){echo('[ -GET WEIGH-IN DATA BY WEEK- | ARRAY] --- There has been an ERROR!!!');}
+      $this->data = array();
+      while($row = mysqli_fetch_assoc($result)){
+        $this->data[] = array(
+          'id'              =>    $row['wi_id'],
+          'competitor_id'   =>    $row['wi_competitor_id'],
+          'team_id'         =>    $row['wi_team_id'],
+          'begin'           =>    $row['wi_begin'],
+          'previous'        =>    $row['wi_previous'],
+          'current'         =>    $row['wi_current'],
+          'week_id'         =>    $row['wi_week_id'],
+          'notes'           =>    $row['wi_notes'],
+          'date_entered'    =>    $row['wi_date_entered']
+        );
+
+        $weigh_in_data = array(
+          'competitor_id'     =>    $row['wi_competitor_id'],
+          'team_id'           =>    $row['wi_team_id'],
+          'begin'             =>    $row['wi_begin'],
+          'previous'          =>    $row['wi_previous'],
+          'current'           =>    $row['wi_current']
+        );
+
+        $this->compute_weigh_in_results($weigh_in_data);
+      }
+      $this->json = json_encode($this->data);
+      return $this->data;
+    }
+
     public function weight_loss(){
       return number_format($this->previous - $this->current, 1);
     }
@@ -104,8 +227,6 @@ class WeighIn{
     public function overall_weight_loss_percent(){
       return number_format(($this->overall_weight_loss() / $this->begin) * 100, 6);
     }
-
-    public function compute_results(){}
 
     public function compute_weigh_in_results($data){
       $this->competitor_id                          = $data['competitor_id'];
@@ -372,6 +493,26 @@ class WeighIn{
       $this->id = $id;
     }
 
+    public function reset_results(){
+      $this->drop_tables();
+    }
+
+
+    public function drop_tables(){
+      $this->drop_results();
+      $this->drop_team_results();
+      header('Location: ./results.php?week=1');
+    }
+
+    public function drop_results(){
+      $sql = "DROP TABLE results;";
+      $result = mysqli_query($this->connection, $sql);
+    }
+
+    public function drop_team_results(){
+      $sql = "DROP TABLE team_results;";
+      $result = mysqli_query($this->connection, $sql);
+    }
   }
   // ********************** FOR TESTING PURPOSES *********************************
   // $weigh_in = new WeighIn($connection);

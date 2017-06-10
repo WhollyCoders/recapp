@@ -26,11 +26,10 @@ $week = new Week($connection);
 $week_ending = $week->get_week_end($week_id + 1);
 
 $weigh_in = new WeighIn($connection);
-$weigh_in->compute_results();
+$weigh_in->compute_results($week_id);
 $total_weight_loss                  = $weigh_in->get_total_weight_loss_competition($week_id);
 $overall_total_weight_loss          = $weigh_in->get_overall_total_weight_loss_competition($week_id);
-$total_team_weight_loss             = $weigh_in->get_total_team_weight_loss_competition($week_id);
-$total_overall_team_weight_loss     = $weigh_in->get_overall_total_team_weight_loss_competition($week_id);
+
 
 $team = new Team($connection);
 $teams = $team->get_teams();
@@ -39,6 +38,11 @@ $res = new Result($connection);
 $iwl_leaders = $res->get_individual_weight_loss($week_id);
 $owl_leaders = $res->get_overall_weight_loss($week_id);
 
+$total_team_weight_loss             = $weigh_in->get_total_team_weight_loss_competition($week_id);
+$total_overall_team_weight_loss     = $weigh_in->get_overall_total_team_weight_loss_competition($week_id);
+$biggest_loser                      = $weigh_in->get_biggest_loser($week_id);
+$most_raw_pounds                    = $weigh_in->get_most_raw_pounds($week_id);
+// prewrap($biggest_loser[0]);
 $comp = new Competitor($connection);
 // $comp->get_competitor($competitor_id);
 
@@ -89,7 +93,27 @@ $comp = new Competitor($connection);
     echo($current_team.' ( '.$leader['overall_weight_loss'].' ) '.$leader['overall_weight_loss_pct'].'%'); ?></li>
   <?php  } ?>
 </ol>
-
+<h2>Overall Biggest Loser:
+  <?php
+    $comp_name = $comp->get_competitor($biggest_loser[0]['competitor_id']);
+    echo($comp_name . ' ( '.$biggest_loser[0]['overall_weight_loss'].' ) '.$biggest_loser[0]['overall_weight_loss_pct'].'%');
+  ?></h2>
+<h3>Most Raw Pounds Lost</h3>
+<ol>
+    <?php foreach ($most_raw_pounds as $raw_pounds) { ?>
+    <li>
+      <?php
+        $comp_name = $comp->get_competitor($raw_pounds['competitor_id']);
+        echo($comp_name.' - ('.$raw_pounds['overall_weight_loss'].')');
+       ?>
+    </li>
+    <?php  } ?>
+</ol>
+<hr>
 <a href="results.php?week=<?php echo($prev_result);?>"> < prev</a> | <a href="results.php?week=<?php echo($next_result);?>"> next ></a>
+<hr>
+<p style="text-align: right;">
+  <a href="./reset.php?reset=true">Reset Results</a>
+</p>
 </div>
 <?php include('./includes/footer.inc.php'); ?>
