@@ -1,6 +1,6 @@
 <?php
 if(isset($_GET['reset'])){
-  require('../../myb4g-connect.php');
+  require('../myb4g-connect.php');
   require('./php/library.php');
   require('./models/weigh_in/WeighIn.php');
 

@@ -8,17 +8,17 @@ if(isset($_GET['id'])){
 
   $id = $_GET['id'];
   $team = new Team($connection);
-  prewrap($team);
-  $team = $team->get_team($id);
-
+  // prewrap($team);
+  $t = $team->get_team($id);
+  // prewrap($t);
   if(!$team){echo('[SELECT TEAM] --- There is an ERROR!!!');}
 
   // prewrap($team);
 
-    $id               = $team[0]['team_id'];
-    $name             = $team[0]['team_name'];
-    $leader           = $team[0]['team_leader'];
-    $date_entered     = $team[0]['team_date_entered'];
+    $id               = $t['team_id'];
+    $name             = $t['team_name'];
+    $leader           = $t['team_leader'];
+    $date_entered     = $t['team_date_entered'];
 
   }
 ?>

@@ -8,9 +8,11 @@ require('./models/team/Team.php');
 
 if(isset($_GET['team'])){
   $team_id = $_GET['team'];
+  // prewrap($team_id);
   $team = new Team($connection);
   $current_team = $team->get_team($team_id);
-  $team_name = $current_team;
+  $team_name = $current_team['team_name'];
+    // prewrap($team_name);
   // prewrap($current_team);
 
   $weigh_in = new WeighIn($connection);

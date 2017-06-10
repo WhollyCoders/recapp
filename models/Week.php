@@ -12,8 +12,8 @@ class Week{
     if($result){
       $row = mysqli_fetch_assoc($result);
       $week_end = $row['week_results_posted'];
+      return $week_end;
     }
-    return $week_end;
   }
 }
  ?>

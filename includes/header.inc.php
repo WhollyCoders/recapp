@@ -25,8 +25,8 @@
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
                 <li class="active"><a href="./index">Dashboard</a></li>
-                <li><a href="./competitors">Competitors</a></li>
-                <li><a href="./teams">Teams</a></li>
+                <li><a href="./competitors.php">Competitors</a></li>
+                <li><a href="./teams.php">Teams</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Weigh-Ins <span class="caret"></span></a>
                   <ul class="dropdown-menu">

@@ -18,7 +18,7 @@ $weigh_ins = $weigh_in->get_weigh_ins_team_week($team_id, $week);
 }else{header('Location: ./teams');}
 ?>
 <div class="container">
-  <h1><?php echo($page_title.' - '.$name.' | Week '.$week);?></h1>
+  <h1><?php echo($page_title.' - '.$name['team_name'].' | Week '.$week);?></h1>
   <table class="table table-striped table-bordered table-condensed table-hover">
     <tr>
       <th>ID</th>
