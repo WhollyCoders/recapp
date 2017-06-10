@@ -43,6 +43,34 @@ class WeighIn{
 
     }
 
+    public function get_top_ten($week_id){
+      $sql = "SELECT * FROM results
+      WHERE result_week_id='$week_id'
+      ORDER BY result_overall_weight_loss_pct
+      DESC LIMIT 10;";
+      $result = mysqli_query($this->connection, $sql);
+      return $most_raw_pounds = $this->get_top_ten_data($result);
+    }
+
+    public function get_top_ten_data($result){
+      $data = array();
+      if($result){
+        while($row = mysqli_fetch_assoc($result)){
+          $data[] = array(
+            'competitor_id'             =>    $row['result_competitor_id'],
+            'team_id'                   =>    $row['result_team_id'],
+            'weight_loss'               =>    $row['result_weight_loss'],
+            'weight_loss_pct'           =>    $row['result_weight_loss_pct'],
+            'overall_weight_loss'       =>    $row['result_overall_weight_loss'],
+            'overall_weight_loss_pct'   =>    $row['result_overall_weight_loss_pct'],
+          );
+        }
+        $this->data = $data;
+        $this->json = json_encode($data);
+        return $data;
+      }
+    }
+
     public function get_most_raw_pounds($week_id){
       $sql = "SELECT * FROM results
       WHERE result_week_id='$week_id'

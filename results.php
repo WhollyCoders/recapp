@@ -42,6 +42,7 @@ $total_team_weight_loss             = $weigh_in->get_total_team_weight_loss_comp
 $total_overall_team_weight_loss     = $weigh_in->get_overall_total_team_weight_loss_competition($week_id);
 $biggest_loser                      = $weigh_in->get_biggest_loser($week_id);
 $most_raw_pounds                    = $weigh_in->get_most_raw_pounds($week_id);
+$top_ten                            = $weigh_in->get_top_ten($week_id);
 // prewrap($biggest_loser[0]);
 $comp = new Competitor($connection);
 // $comp->get_competitor($competitor_id);
@@ -109,6 +110,27 @@ $comp = new Competitor($connection);
     </li>
     <?php  } ?>
 </ol>
+<table class="table">
+  <tr>
+    <th>Place</th>
+    <th>Competitor</th>
+    <th>Raw LBS</th>
+    <th>% Loss</th>
+  </tr>
+    <?php
+    $counter = 0;
+    foreach ($top_ten as $ten) {
+      $counter++;
+      $comp_name = $comp->get_competitor($ten['competitor_id']);
+    ?>
+      <tr>
+        <td><?php echo($counter); ?></td>
+        <td><?php echo($comp_name); ?></td>
+        <td><?php echo($ten['overall_weight_loss']); ?></td>
+        <td><?php echo($ten['overall_weight_loss_pct']); ?></td>
+      <tr>
+    <?php  } ?>
+</table>
 <hr>
 <a href="results.php?week=<?php echo($prev_result);?>"> < prev</a> | <a href="results.php?week=<?php echo($next_result);?>"> next ></a>
 <hr>

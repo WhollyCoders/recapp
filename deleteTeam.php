@@ -9,7 +9,7 @@ if(isset($_GET['id'])){
   $team = new Team($connection);
   $one_team = $team->get_team($id);
 
-  // prewrap($one_team[0]);
+  prewrap($team);
   //
   // foreach ($one_team as $team) {
   // echo('Team ID: '.$team['team_id'].'<br>');
@@ -21,9 +21,11 @@ if(isset($_GET['id'])){
 
 
   // ***** UPDATE *****
-      $id       = $one_team[0]['team_id'];
-      $name     = $one_team[0]['team_name'];
-      $leader   = $one_team[0]['team_leader'];
+  // prewrap($id);
+
+      // $name     = $one_team['team_name'];
+      //   prewrap($name);
+      // $leader   = $one_team['team_leader'];
   // ******* SET UPDATE PARAMS *********
       // $params = array(
       //   'team_id'     =>  $id,

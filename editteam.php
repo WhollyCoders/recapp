@@ -8,6 +8,7 @@ if(isset($_GET['id'])){
 
   $id = $_GET['id'];
   $team = new Team($connection);
+  prewrap($team);
   $team = $team->get_team($id);
 
   if(!$team){echo('[SELECT TEAM] --- There is an ERROR!!!');}
