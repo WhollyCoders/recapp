@@ -100,7 +100,7 @@ class Competitor{
     }
 
     public function get_competitors(){
-      $query = "SELECT * FROM competitors;";
+      $query = "SELECT * FROM competitors ORDER BY competitor_lastname;";
       // prewrap($this->connection);
       // prewrap($query);
       $this->result = mysqli_query($this->connection, $query);

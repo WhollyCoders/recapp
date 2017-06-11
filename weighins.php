@@ -37,7 +37,7 @@ if(isset($_GET['week'])){
           <th>Current</th>
           <th><a href="./weeks.php">Week ID</a></th>
           <th>Notes</a></th>
-          <th>Date Entered</th>
+          <!-- <th>Date Entered</th> -->
         </tr>
           <?php
             foreach($weigh_ins as $weigh_in){
@@ -51,7 +51,7 @@ if(isset($_GET['week'])){
               <td><?php echo($weigh_in['current']);?></td>
               <td><?php echo($weigh_in['week_id']);?></td>
               <td><?php echo($weigh_in['notes']);?></td>
-              <td><?php echo($weigh_in['date_entered']);?></td>
+              <!-- <td><?php echo($weigh_in['date_entered']);?></td> -->
               <td><a class="btn btn-primary" href="./editweighin.php?id=<?php echo($weigh_in['id']);?>">Update</a></td>
               <td><a class="btn btn-danger" href="./deleteweighin.php?id=<?php echo($weigh_in['id']);?>">Delete</a></td>
             </tr>

@@ -11,7 +11,9 @@ require('./models/competitor/Competitor.php');
 ?>
 <div class="container">
   <h1><?php echo($page_title.' - Week '.$_GET['week']);?></h1>
-  <img src="./images/l2l.jpg" alt="Losing to Live Logo">
+  <div class="b4g-logo" style="text-align: center; padding: 45px 0px;">
+    <img src="./images/l2l.jpg" alt="Losing to Live Logo" style="width: 45%; height: auto;">
+  </div>
 <?php if(isset($_GET['week']) && $_GET['week'] >= 1 && $_GET['week'] <= 10){ ?>
   <!-- <p>Can I get some data for Week <?php echo($_GET['week']); ?> please???</p> -->
 <?php }else{echo('No Data For You!!!');}?>
@@ -119,6 +121,7 @@ $comp = new Competitor($connection);
     </li>
     <?php  } ?>
 </ol>
+<h2 style="text-align: center;">Top 10 - Overall Losers</h2>
 <table class="table">
   <tr>
     <th>Place</th>

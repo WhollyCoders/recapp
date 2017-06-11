@@ -24,7 +24,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="./index">Dashboard</a></li>
+                <li class="active"><a href="./index.php">Dashboard</a></li>
                 <li><a href="./competitors.php">Competitors</a></li>
                 <li><a href="./teams.php">Teams</a></li>
                 <li class="dropdown">
@@ -61,7 +61,7 @@
                     <li><a href="results.php?week=10">Week 10</a></li>
                   </ul>
                 </li>
-                <li><a href="./upload">Upload Weigh-in</a></li>
+                <li><a href="./upload.php">Upload Weigh-in</a></li>
               </ul>
             </div><!--/.nav-collapse -->
         </nav>

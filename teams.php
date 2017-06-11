@@ -17,7 +17,7 @@ $teams = $team->get_teams();
           <th>ID</th>
           <th>Team Name</th>
           <th>Team Leader</th>
-          <th>Date Entered</th>
+          <!-- <th>Date Entered</th> -->
         </tr>
         <?php
         foreach($teams as $team){
@@ -26,7 +26,7 @@ $teams = $team->get_teams();
             <td><a href="./viewteam.php?team=<?php echo($team['team_id']);?>"><?php echo($team['team_id']);?></a></td>
             <td><?php echo($team['team_name']);?></td>
             <td><?php echo($team['team_leader']);?></td>
-            <td><?php echo($team['team_date_entered']);?></td>
+            <!-- <td><?php echo($team['team_date_entered']);?></td> -->
             <td><a class="btn btn-primary" href="./editteam.php?id=<?php echo($team['team_id']);?>">Update</a></td>
             <td><a class="btn btn-danger" href="./deleteteam.php?id=<?php echo($team['team_id']);?>">Delete</a></td>
           </tr>

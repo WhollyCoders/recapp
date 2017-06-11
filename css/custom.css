@@ -1,8 +1,10 @@
-body{font-size: 24px;}
+body{font-size: 20px;}
 header{padding-top: 15px;}
 header h2{text-align: center; margin: 0px;}
 #header-week-ending{font-size: 45px; color: #336699;}
 aside{border-left: solid 1px #ccc;}
+#heading-team-names{font-size: 34px;}
 #heading-team-names, #heading-biggest-loser{text-align: center;}
+.form-add-competitor{padding-left:15px;}
   .form-container{width:70%; margin: 0px auto;}
   input[name=add_competitor], input[name=add_weigh_in]{width:100%;}
