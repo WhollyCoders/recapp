@@ -1,5 +1,7 @@
 <?php
 $page_title = 'Results';
+if(!$_GET){header('Location: ./index.php');}
+if(!isset($_GET['week'])){header('Location: ./competitors.php');}
 include('./includes/header.inc.php');
 require('../myb4g-connect.php');
 require('./php/library.php');

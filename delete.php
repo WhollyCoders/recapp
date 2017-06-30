@@ -24,7 +24,7 @@ if(isset($_GET['id'])){
     <div class="container">
       <h1>Delete Competitor</h1>
       <p>Are you sure you want to delete <?php echo('<strong>'.$cfn.'</strong>'); ?> ???</p>
-      <a class="btn btn-success" href="./competitors" type="button" name="btn-delete-no">Hmmm... Let me think about it...</a> |
+      <a class="btn btn-success" href="./competitors.php" type="button" name="btn-delete-no">Hmmm... Let me think about it...</a> |
       <a class="btn btn-danger" href="./confirmdelete.php?<?php echo($query_string); ?>" target="_blank" type="button" name="btn-delete-yes">Delete Forever!!!</a>
     </div>
 

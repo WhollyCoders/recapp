@@ -31,6 +31,6 @@ if(isset($_POST['add_weigh_in'])){
   // prewrap($weigh_in_params);
 
   $weigh_in->insert_weigh_in($weigh_in_params);
-  header('Location:  /__PROJECTS/recapp/weighins.php?week='.$week_id);
+  header('Location:  ../weighins.php?week='.$week_id);
 }else{echo('There has been an ERROR!!!');}
  ?>
