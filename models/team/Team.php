@@ -82,7 +82,7 @@ class Team{
       $row = mysqli_fetch_assoc($result);
       $this->data = $row;
       $this->json = json_encode($this->data);
-      return $row['team_name'];
+      return $row;
     }
   }
 // ********************** METHOD | SELECT ONE TEAM **********************************

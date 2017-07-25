@@ -66,7 +66,7 @@ $comp = new Competitor($connection);
     <li><?php
     $current_team = $team->get_team($leader['team_id']);
     $comp_name = $comp->get_competitor($leader['competitor_id']);
-    echo($comp_name.' - '.$current_team.' ( '.$leader['weight_loss'].' ) '.$leader['weight_loss_pct'].'%'); ?></li>
+    echo($comp_name.' - '.$current_team['team_name'].' ( '.$leader['weight_loss'].' ) '.$leader['weight_loss_pct'].'%'); ?></li>
   <?php  } ?>
 </ol>
 <h3>Overall Individual Weight Loss</h3>
@@ -75,7 +75,7 @@ $comp = new Competitor($connection);
     <li><?php
     $current_team = $team->get_team($leader['team_id']);
     $comp_name = $comp->get_competitor($leader['competitor_id']);
-    echo($comp_name.' - '.$current_team.' ( '.$leader['overall_weight_loss'].' ) '.$leader['overall_weight_loss_pct'].'%'); ?></li>
+    echo($comp_name.' - '.$current_team['team_name'].' ( '.$leader['overall_weight_loss'].' ) '.$leader['overall_weight_loss_pct'].'%'); ?></li>
   <?php  } ?>
 </ol>
 <h3>Weekly Team Weight Loss</h3>
@@ -83,7 +83,7 @@ $comp = new Competitor($connection);
   <?php foreach ($total_team_weight_loss as $leader) { ?>
     <li><?php
     $current_team = $team->get_team($leader['team_id']);
-    echo($current_team.' ( '.$leader['weight_loss'].' ) '.$leader['weight_loss_pct'].'%'); ?></li>
+    echo($current_team['team_name'].' ( '.$leader['weight_loss'].' ) '.$leader['weight_loss_pct'].'%'); ?></li>
   <?php  } ?>
 </ol>
 <h3>Overall Team Weight Loss</h3>
@@ -91,7 +91,7 @@ $comp = new Competitor($connection);
   <?php foreach ($total_overall_team_weight_loss as $leader) { ?>
     <li><?php
     $current_team = $team->get_team($leader['team_id']);
-    echo($current_team.' ( '.$leader['overall_weight_loss'].' ) '.$leader['overall_weight_loss_pct'].'%'); ?></li>
+    echo($current_team['team_name'].' ( '.$leader['overall_weight_loss'].' ) '.$leader['overall_weight_loss_pct'].'%'); ?></li>
   <?php  } ?>
 </ol>
 <h2>Overall Biggest Loser:
